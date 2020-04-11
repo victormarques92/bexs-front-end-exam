@@ -4,6 +4,7 @@ import { Colors } from '../../styles/styleds'
 export const Nav = styled.nav `
     background-color: ${Colors.white};
     border-bottom: 0.5px solid ${Colors.grey}4D;
+    margin-bottom: 65px;
     padding: 24px 0;
 
     .content {
