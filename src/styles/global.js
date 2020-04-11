@@ -28,7 +28,7 @@ export const GlobalStyle = createGlobalStyle`
 
 body,
 html {
-	background-color: ${Colors.white};
+	background-color: ${Colors.alabaster};
 	color: ${Colors.grey};
 }
 

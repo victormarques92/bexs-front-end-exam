@@ -5,7 +5,7 @@ export const Colors = {
   grey: '#707070',
   silver: '#C9C9C9',
   valencia: '#DE4B4B',
-  mineShaft: '#3C3C3C',
+  dustyGray: '#9C9C9C',
   black70: '#000000B3',
   mercury: '#E6E6E6',
   buttercup: '#F6BB1D',

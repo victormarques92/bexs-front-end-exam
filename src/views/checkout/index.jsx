@@ -1,12 +1,12 @@
-import React, { Component } from 'react'
-import { Teste } from './styles'
+import React, { Component, Fragment } from 'react'
+
+// Components
+import Navigation from '../../components/navigation'
 
 export default class index extends Component {
     render() {
-        return (
-            <Teste>
-                Checkout
-            </Teste>
-        )
+        return <Fragment>
+            <Navigation />
+        </Fragment>
     }
 }
