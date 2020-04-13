@@ -6,6 +6,10 @@ export const Steps = styled.ul `
 	justify-content: center;
 	padding: 32px 16px;
 
+	@media (max-width: 992px) {
+		display: none;
+	}
+
 	.item {
 		align-items: center;
 		background-color: ${Colors.white};

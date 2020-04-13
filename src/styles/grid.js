@@ -13,6 +13,10 @@ export const Container = styled.div `
   padding-left: 16px;
   padding-right: 16px;
 
+  @media (max-width: 992px) {
+    padding: 0;
+  }
+
   display: ${props => props.flex && 'flex'};
   align-items: ${props => props.valign && props.valign};
   justify-content: ${props => props.halign && props.halign};
@@ -45,6 +49,10 @@ export const Col = styled.div `
   padding-right: 16px;
   position: relative;
   width: 100%;
+
+  @media (max-width: 992px) {
+    padding: 0;
+  }
 
   ${({ xs }) => xs && getWidthGrid(xs)}
   

@@ -44,13 +44,17 @@ export default class index extends Component {
 
             <Container>
                 <Row>
-                    <Col xl="flex">
+                    <Col>
                         <Row>
                             <SectionCard>
                                 <Link className="link" to="#!">
                                     <FiChevronLeft />
                                     <span>Alterar forma de pagamento</span>
                                 </Link>
+
+                                <div className="step">
+                                    <strong>Etapa 2</strong> de 3
+                                </div>
 
                                 <div className="box-title">
                                     <img src={IconCard} alt="Icon Card" />
@@ -104,7 +108,7 @@ export default class index extends Component {
                                             />
                                         </Col>
 
-                                        <Col xs={6}>
+                                        <Col xs={6} className="validate">
                                             <Input
                                                 id="cardValidate"
                                                 ref={ref => this.cardValidateInput = ref}
@@ -118,7 +122,7 @@ export default class index extends Component {
                                             />
                                         </Col>
 
-                                        <Col xs={6}>
+                                        <Col xs={6} className="cvv">
                                             <Input
                                                 id="cardCVV"
                                                 ref={ref => this.cardCVVInput = ref}
@@ -156,10 +160,6 @@ export default class index extends Component {
                                 </form>
                             </Content>
                         </Row>
-                    </Col>
-
-                    <Col xl={4} className="summary">
-                        <Summary />
                     </Col>
                 </Row>
             </Container>

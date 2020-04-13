@@ -7,14 +7,14 @@ export const Nav = styled.nav `
     margin-bottom: 65px;
     padding: 24px 0;
 
+    @media (max-width: 992px) {
+        display: none;
+    }
+
     .content {
         align-items: center;
         display: flex;
-        justify-content: center;
-
-        @media (min-width: 992px) {
-            justify-content: space-between;
-        }
+        justify-content: space-between;
         
         .brand {
             height: 42px;

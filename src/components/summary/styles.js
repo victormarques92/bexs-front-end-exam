@@ -5,6 +5,10 @@ export const List = styled.div `
     background-color: ${Colors.white};
     padding: 52px 5px;
 
+    @media (max-width: 992px) {
+        display: none;
+    }
+
     hr {
         border-top: 1px solid ${Colors.grey};
         margin: 25px 15px;

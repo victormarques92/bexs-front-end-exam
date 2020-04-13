@@ -9,6 +9,10 @@ export const Foot = styled.footer `
     margin-top: 65px;
     padding: 28px;
 
+    @media (max-width: 992px) {
+        display: none;
+    }
+
     .item {
         background-color: ${Colors.silver};
         border-radius: 5px;
