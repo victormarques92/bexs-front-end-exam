@@ -2,3 +2,8 @@
     font-family: 'Pro Text Regular';
     src: url('../../styles/fonts/SFProText-Regular.ttf');
 }
+
+@font-face {
+    font-family: 'Pro Text SemiBold';
+    src: url('../../styles/fonts/SFProText-Semibold.ttf');
+}
