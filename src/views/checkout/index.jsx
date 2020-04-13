@@ -17,15 +17,10 @@ import Summary from '../../components/summary'
 import StatusStep from '../../components/status-steps'
 import Input from '../../components/input'
 import Select from '../../components/select'
+import CreditCard from '../../components/credit-card'
 
 // Images
 import IconCard from '../../assets/images/icon-card.svg'
-import Diners from '../../assets/images/flags/diners.png'
-import Discover from '../../assets/images/flags/discover.png'
-import Elo from '../../assets/images/flags/elo.png'
-import Hipercard from '../../assets/images/flags/hipercard.png'
-import Mastercard from '../../assets/images/flags/master.png'
-import Visa from '../../assets/images/flags/visa.png'
 
 export default class index extends Component {
     state = {
@@ -64,6 +59,15 @@ export default class index extends Component {
                                         Adicione um novo cartão de crédito
                                     </span>
                                 </div>
+
+                                <CreditCard
+                                    flag={this.state.flag}
+                                    cardFlip={this.state.cardFlip}
+                                    cardNumber={this.state.cardNumber}
+                                    cardName={this.state.cardName}
+                                    cardValidate={this.state.cardValidate}
+                                    cardCVV={this.state.cardCVV}
+                                />
                             </SectionCard>
 
                             <Content>
@@ -95,6 +99,8 @@ export default class index extends Component {
                                                 validate={this.isCardNameFilled}
                                                 errorMessage="Insira seu nome completo"
                                                 mgBottom={20}
+                                                maxLength={18}
+                                                uppercase
                                             />
                                         </Col>
 
@@ -118,6 +124,7 @@ export default class index extends Component {
                                                 ref={ref => this.cardCVVInput = ref}
                                                 label="CVV"
                                                 onChange={e => this.setState({ cardCVV: e.target.value })}
+                                                onFocus={() => this.setState({ cardFlip: true })}
                                                 value={this.state.cardCVV}
                                                 validate={this.isCardCVVFilled}
                                                 errorMessage="Código inválido"
@@ -205,35 +212,6 @@ export default class index extends Component {
         this.setState({ flag })
 
         return flag
-    }
-
-    handleFlag() {
-        switch (this.state.flag) {
-            case 'visa':
-                return <img src={Visa} alt={Visa} />
-
-            case 'mastercard':
-                return <img src={Mastercard} alt={Mastercard} />
-
-            case 'diners':
-                return <img src={Diners} alt={Diners} />
-
-            case 'discover':
-                return <img src={Discover} alt={Discover} />
-
-            case 'elo':
-                return <img src={Elo} alt={Elo} />
-
-            case 'hipercard':
-                return <img src={Hipercard} alt={Hipercard} />
-
-            default:
-                break
-        }
-    }
-
-    handleFlip() {
-        this.setState({ cardFlip: true })
     }
 
     formValidate(e) {

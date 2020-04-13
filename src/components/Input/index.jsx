@@ -14,13 +14,14 @@ export default class Input extends Component {
 
 	render() {
 		return (
-			<BoxInput mgBottom={this.props.mgBottom}>
+			<BoxInput mgBottom={this.props.mgBottom} uppercase={this.props.uppercase}>
 				<InputMask id={this.props.id}
 					type={this.state.type || 'text'}
 					ref={input => { this.textInput = input }}
 					value={this.props.value}
 					onChange={this.props.onChange}
 					onBlur={() => this.checkValidate()}
+					onFocus={this.props.onFocus}
 					onKeyPress={this.props.onKeyPress}
 					mask={this.props.mask}
 					maskChar=""

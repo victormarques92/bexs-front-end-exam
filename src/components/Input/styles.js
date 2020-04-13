@@ -39,6 +39,7 @@ export const BoxInput = styled.div `
 		font-size: 17px;
 		line-height: 22px;
 		padding: 20px 0 5px;
+		text-transform: ${props => props.uppercase && 'uppercase'};
 		width: 100%;
 
 		&:focus {

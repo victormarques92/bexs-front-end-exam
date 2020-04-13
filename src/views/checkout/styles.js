@@ -6,6 +6,7 @@ export const Checkout = styled.div `
     .box-title {
         align-items: center;
         display: flex;
+        margin-bottom: 30px;
         margin-top: 55px;
 
         img {
