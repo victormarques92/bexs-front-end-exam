@@ -69,7 +69,7 @@ export const BoxInput = styled.div `
 
 	.error {
 		color: ${Colors.danger};
-		font-size: 12px;
+		font-size: 13px;
 		margin-top: 5px;
 	}
 `

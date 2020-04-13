@@ -1,33 +1,288 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
+
+// Icons
+import { FiChevronLeft } from 'react-icons/fi'
 
 // Grid
 import { Container, Row, Col } from '../../styles/grid'
+
+// Styles
+import { Checkout, SectionCard, Content, Button } from './styles'
 
 // Components
 import Navigation from '../../components/navigation'
 import Footer from '../../components/footer'
 import Summary from '../../components/summary'
+import StatusStep from '../../components/status-steps'
+import Input from '../../components/input'
+import Select from '../../components/select'
+
+// Images
+import IconCard from '../../assets/images/icon-card.svg'
+import Diners from '../../assets/images/flags/diners.png'
+import Discover from '../../assets/images/flags/discover.png'
+import Elo from '../../assets/images/flags/elo.png'
+import Hipercard from '../../assets/images/flags/hipercard.png'
+import Mastercard from '../../assets/images/flags/master.png'
+import Visa from '../../assets/images/flags/visa.png'
 
 export default class index extends Component {
+    state = {
+        cardNumber: '',
+        cardName: '',
+        cardValidate: '',
+        cardCVV: '',
+        cardFlip: false,
+        flag: '',
+        dataParcels: [],
+        parcelId: 0
+    }
+
+    componentDidMount() {
+        this.parcels()
+    }
+
     render() {
-        return <Fragment>
+        return <Checkout>
             <Navigation />
 
             <Container>
                 <Row>
-                    <Col lg={8}>
-                        <div style={{ backgroundColor: 'white', marginBottom: 30 }}>
-                            <h1>Form</h1>
-                        </div>
+                    <Col xl="flex">
+                        <Row>
+                            <SectionCard>
+                                <Link className="link" to="#!">
+                                    <FiChevronLeft />
+                                    <span>Alterar forma de pagamento</span>
+                                </Link>
+
+                                <div className="box-title">
+                                    <img src={IconCard} alt="Icon Card" />
+
+                                    <span className="text">
+                                        Adicione um novo cartão de crédito
+                                    </span>
+                                </div>
+                            </SectionCard>
+
+                            <Content>
+                                <StatusStep stepNumber={1} />
+
+                                <form>
+                                    <Row>
+                                        <Col xs={12}>
+                                            <Input
+                                                id="cardNumber"
+                                                ref={ref => this.cardNumberInput = ref}
+                                                label="Número do cartão"
+                                                onChange={e => this.setState({ cardNumber: e.target.value })}
+                                                value={this.state.cardNumber}
+                                                validate={() => this.getCardFlag(this.state.cardNumber)}
+                                                errorMessage="Número de cartão inválido"
+                                                mgBottom={20}
+                                                mask="9999 9999 9999 9999"
+                                            />
+                                        </Col>
+
+                                        <Col xs={12}>
+                                            <Input
+                                                id="cardName"
+                                                ref={ref => this.cardNameInput = ref}
+                                                label="Nome (igual ao cartão)"
+                                                onChange={e => this.setState({ cardName: e.target.value })}
+                                                value={this.state.cardName}
+                                                validate={this.isCardNameFilled}
+                                                errorMessage="Insira seu nome completo"
+                                                mgBottom={20}
+                                            />
+                                        </Col>
+
+                                        <Col xs={6}>
+                                            <Input
+                                                id="cardValidate"
+                                                ref={ref => this.cardValidateInput = ref}
+                                                label="Validade"
+                                                onChange={e => this.setState({ cardValidate: e.target.value })}
+                                                value={this.state.cardValidate}
+                                                validate={this.isCardValidateFilled}
+                                                errorMessage="Data inválida"
+                                                mgBottom={20}
+                                                mask="99/99"
+                                            />
+                                        </Col>
+
+                                        <Col xs={6}>
+                                            <Input
+                                                id="cardCVV"
+                                                ref={ref => this.cardCVVInput = ref}
+                                                label="CVV"
+                                                onChange={e => this.setState({ cardCVV: e.target.value })}
+                                                value={this.state.cardCVV}
+                                                validate={this.isCardCVVFilled}
+                                                errorMessage="Código inválido"
+                                                mgBottom={20}
+                                                mask={this.state.flag === 'amex' || this.state.flag === 'discover' ? '9999' : '999'}
+                                                info
+                                            />
+                                        </Col>
+
+                                        <Col xs={12}>
+                                            <Select
+                                                id="parcelas"
+                                                placeholder="Número de parcelas"
+                                                value={this.state.dataParcels.find(parcel => parcel.id === this.state.parcelId)}
+                                                data={this.state.dataParcels}
+                                                onSelect={parcelId => this.setState({ parcelId })}
+                                                validate={this.isParcelsFilled}
+                                                errorMessage="Insira o número de parcelas"
+                                                mgBottom={40}
+                                            />
+                                        </Col>
+                                    </Row>
+
+                                    <Row className="align-button">
+                                        <Col xs="auto">
+                                            <Button>Continuar</Button>
+                                        </Col>
+                                    </Row>
+                                </form>
+                            </Content>
+                        </Row>
                     </Col>
 
-                    <Col lg={4}>
+                    <Col xl={4} className="summary">
                         <Summary />
                     </Col>
                 </Row>
             </Container>
 
             <Footer />
-        </Fragment>
+        </Checkout>
+    }
+
+    // ============================================
+    //                                    Functions
+    // ============================================
+    parcels() {
+        for (let i = 0; i < 12; i++) {
+            let price = 12000
+            let value = i + 1
+
+            this.state.dataParcels.push({
+                id: value,
+                name: `${value}x ${
+                    Intl.NumberFormat('pt-BR', {
+                        style: 'currency',
+                        currency: 'BRL'
+                    }).format(price / value)} sem juros`
+            })
+        }
+    }
+
+    getCardFlag(cardNumber) {
+        let checkCard = cardNumber.replace(/[^0-9]+/g, '')
+        let flag = ''
+
+        let cards = {
+            visa: /^4[0-9]{12}(?:[0-9]{3})/,
+            mastercard: /^5[1-5][0-9]{14}/,
+            diners: /^3(?:0[0-5]|[68][0-9])[0-9]{11}/,
+            amex: /^3[47][0-9]{13}/,
+            discover: /^6(?:011|5[0-9]{2})[0-9]{12}/,
+            hipercard: /^(606282\d{10}(\d{3})?)|(3841\d{15})/,
+            elo: /^((((636368)|(438935)|(504175)|(451416)|(636297))\d{0,10})|((5067)|(4576)|(4011))\d{0,12})/,
+            jcb: /^(?:2131|1800|35\d{3})\d{11}/,
+            aura: /^(5078\d{2})(\d{2})(\d{11})$/
+        }
+
+        for (let itemflag in cards) {
+            if (cards[itemflag].test(checkCard)) {
+                flag = itemflag
+            }
+        }
+
+        this.setState({ flag })
+
+        return flag
+    }
+
+    handleFlag() {
+        switch (this.state.flag) {
+            case 'visa':
+                return <img src={Visa} alt={Visa} />
+
+            case 'mastercard':
+                return <img src={Mastercard} alt={Mastercard} />
+
+            case 'diners':
+                return <img src={Diners} alt={Diners} />
+
+            case 'discover':
+                return <img src={Discover} alt={Discover} />
+
+            case 'elo':
+                return <img src={Elo} alt={Elo} />
+
+            case 'hipercard':
+                return <img src={Hipercard} alt={Hipercard} />
+
+            default:
+                break
+        }
+    }
+
+    handleFlip() {
+        this.setState({ cardFlip: true })
+    }
+
+    formValidate(e) {
+        e.preventDefault()
+
+        if (
+            !this.getCardFlag(this.state.cardNumber) ||
+            !this.isCardNameFilled() ||
+            !this.isCardValidateFilled() ||
+            !this.isCardCVVFilled()) {
+
+            this.cardNumberInput.checkValidate()
+            this.cardNameInput.checkValidate()
+            this.cardValidateInput.checkValidate()
+            this.cardCVVInput.checkValidate()
+            return
+        }
+
+        this.presenter.loadRegisterCard(
+            {
+                cardHolder: this.state.cardName,
+                brand: this.state.flag,
+                number: this.state.cardNumber.replace(/\s/g, ''),
+                cvv: this.state.cardCVV,
+                expiration: this.state.cardValidate
+            }
+        )
+    }
+
+    // Validation of Card
+    isCardNameFilled = () => {
+        return this.state.cardName.length > 0
+    }
+
+    isCardValidateFilled = () => {
+        return this.state.cardValidate.length > 4
+    }
+
+    isCardCVVFilled = () => {
+        this.setState({ cardFlip: false })
+
+        if (this.state.flag === 'amex' || this.state.flag === 'discover') {
+            return this.state.cardCVV.length > 3
+        } else {
+            return this.state.cardCVV.length > 2
+        }
+    }
+
+    isParcelsFilled = () => {
+        return this.state.parcelId > 0
     }
 }
